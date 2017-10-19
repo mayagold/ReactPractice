@@ -7,8 +7,9 @@ class Hello extends Component { //the component we're creating
   render() { // render method controls what is rendered, or displayed, to the screen.
     return ( // can only return one jsx object at a time so if you want mult lines of text they must be in a container div
       <div>
-        <h1>Hello World!</h1>
-        <h3>It is time for tea.</h3>
+        <h1>Hello {this.props.name}!</h1>
+        <p>You are {this.props.age} years old.</p>
+        <p>You love: {this.props.animals[0]}</p>
       </div>
     )
   }

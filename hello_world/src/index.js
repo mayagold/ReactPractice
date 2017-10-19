@@ -5,5 +5,15 @@ import ReactDOM from 'react-dom';
 import Hello from './App.js';
 // import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<Hello />, document.getElementById('root'));
+var person = {
+  personName: "Nick",
+  personAge: 24,
+  favorites: [
+    "capybaras",
+    "Tigers",
+    "Dinosaurs count!"
+  ]
+}
+
+ReactDOM.render(<Hello name={person.personName} age={person.personAge} animals={person.favorites} /> , document.getElementById('root'));
 // registerServiceWorker();
