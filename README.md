@@ -183,6 +183,8 @@ class App extends Component {
 
 # Pete Hunt: Secrets of React's Virtual DOM
 
+##### Why we built a virtual DOM, how it compares to other systems, and its relevance to the future of browser technologies.
+
 “The art of programming is the art of organizing complexity, of mastering multitude and avoiding its bastard chaos as effectively as possible.” Edsger Dijkstra
 
 ### Data binding
@@ -197,8 +199,4 @@ Think of it as a polyfill for reactive JS/DOM.
 
 Goal: reliable, predictable software. Simplicity is a prereq for reliability. This means **no interleaving**.
 
-### Simple !== Familiar  
-
-### Key-Value Observation
-
-Observables & Computed properties 
+**Simple !== Familiar**
