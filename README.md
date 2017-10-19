@@ -177,3 +177,28 @@ class App extends Component {
   * A 35 minute, in-depth video on everything involving the Virtual DOM
 * [React without JSX](http://jamesknelson.com/learn-raw-react-no-jsx-flux-es6-webpack/).
   * A blog post on using React without JSX, in case you ever find yourself in this scenario
+
+---
+---
+
+# Pete Hunt: Secrets of React's Virtual DOM
+
+“The art of programming is the art of organizing complexity, of mastering multitude and avoiding its bastard chaos as effectively as possible.” Edsger Dijkstra
+
+### Data binding
+
+Solves a critical problem, namely, that visualizing processes that evolve over time is much harder than visualizing a consistent snapshot at a certain point in time.
+
+**Data binding** syncs state in your UI with state in your data model so you don't have to visualize change.
+
+Think of it as a polyfill for reactive JS/DOM.
+
+"All non-trivial abstractions, to some degree, are leaky."
+
+Goal: reliable, predictable software. Simplicity is a prereq for reliability. This means **no interleaving**.
+
+### Simple !== Familiar  
+
+### Key-Value Observation
+
+Observables & Computed properties 
