@@ -169,8 +169,6 @@ class App extends Component {
 
 ### Further Reading
 
-The links below are optional, but they're great resources for you to reinforce the learning here.
-
 * [React.js Conf 2015 introduction](https://www.youtube.com/watch?v=KVZ-P-ZI6W4&feature=youtu.be&t=510)
   * We'd recommend starting around the 8:35 mark and watching until 16:30.
 * [Official React Documentation on JSX](https://facebook.github.io/react/docs/jsx-in-depth.html)
