@@ -1,7 +1,5 @@
-# Intro to React (Notes from course)
-
----
----
+# Intro to React
+##### Notes from GA course
 
 # Props
 
@@ -88,8 +86,6 @@ class App extends Component {
 * **Nested Component**:
   - Components called inside another component (like calling Comment components within a blog Post). Here is a diagram of the flow of information for a Comment component nested inside (called by!) a Post component:
 
-  ![nested components chart](https://ga-instruction.s3.amazonaws.com/json/REACT/assets/unit1/nested_components_chart.jpg)
-
 
 * **Props**:
   * Arguments passed into a component, as though they were arguments to a function. The component can then use this data to render something or pass the data on to another component. For example, your `App.js` could have
@@ -114,9 +110,6 @@ class Hello extends Component {
   * A virtual representation, or abstraction, of the DOM. React doesn't apply your changes to the DOM directly. While it creates and manipulates elements, it does so through custom React objects. The results of that manipulation are then rendered to the DOM. This prevents you from having to focus on constantly changing the state of a `<div>` tag.
   * The virtual DOM is automatically updated in React with the method `ReactDOM.render()`
   * When your `index.js` is processed, your virtual DOM is compared to the regular DOM, and only the element specified in `ReactDOM.render()` on the page updates.
-
-![Virtual DOM Diagram](https://ga-instruction.s3.amazonaws.com/json/REACT/assets/unit1/DOM.png)
-
 
 
 ### Other Key Code Snippets and Tools
