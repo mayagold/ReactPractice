@@ -200,3 +200,31 @@ Think of it as a polyfill for reactive JS/DOM.
 Goal: reliable, predictable software. Simplicity is a prereq for reliability. This means **no interleaving**.
 
 **Simple !== Familiar**
+
+---
+---
+
+# State
+
+Values stored in a component's state are mutable attributes. Mutable means "changeable."
+
+We can access state values using this.state.val
+
+Setting up and modifying state requires multiple steps —
+* first explicitly declaring the mutation
+* then defining methods to update our state
+
+### ```constructor (props) {}```
+
+The first thing we always put in a constructor is a call to ```super()```.
+* "When this class is created, you should still do the default initialization for this class."
+
+### ```.setState``` Method
+
+Whenever we run .setState:
+
+* Our component calculates the difference ("diff") between the current DOM and the virtual DOM node
+
+* Then, it figures out how to update the state of the DOM in as few manipulations as possible
+
+* It only replaces the current DOM with parts that have changed.
