@@ -227,4 +227,56 @@ Whenever we run .setState:
 
 * Then, it figures out how to update the state of the DOM in as few manipulations as possible
 
-* It only replaces the current DOM with parts that have changed.
+* It only replaces the current DOM with parts that have changed. This is a core advantage of React. Much better performance.
+
+**In React, state just represents the state of data on our page. Something saved to state in React is not automatically saved to a database or to local storage. If you refresh the page, all state is lost.**
+
+### State and Lifecycle
+
+[React Documentation](https://reactjs.org/docs/state-and-lifecycle.html)
+
+In applications with many components, it’s very important to free up resources taken by the components when they are destroyed. This is called “unmounting” in React.
+
+We can declare special methods on the component class to run some code when a component mounts and unmounts.
+
+These methods are called “lifecycle hooks”.
+
+The ```componentDidMount()``` hook runs after the component output has been rendered to the DOM.
+
+The ```componentWillUnmount()``` hook tears down components.
+
+While ```this.props``` is set up by React itself and ```this.state``` has a special meaning, you are free to add additional fields to the class manually if you need to store something that is not used for the visual output.
+
+### Using State Correctly
+
+
+1. Do Not Modify State Directly
+  1. The only place where you can assign this.state is the constructor.
+  1. use ```setState()``` to modify state
+  1. ex:
+      ```
+      // Wrong
+      this.state.comment = 'Hello';
+      // Correct
+      this.setState({comment: 'Hello'});
+      ```
+1. State Updates May Be Asynchronous
+  1. React may batch multiple ```setState()``` calls into a single update for performance.
+  1. Because this.props and this.state may be updated asynchronously, you should not rely on their values for calculating the next state.
+  1. To fix this, use a second form of ```setState()``` that accepts a function rather than an object.
+    1. That function will receive the previous state as the first argument, and the props at the time the update is applied as the second argument:
+    ```
+    // Correct
+    this.setState((prevState, props) => ({
+      counter: prevState.counter + props.increment
+    }));
+    ```
+1. State Updates are Merged
+  1. When you call ```setState()```, React merges the object you provide into the current state.
+1. Data Flows Down
+  1. Neither parent nor child components can know if a certain component is stateful or stateless, and they shouldn’t care whether it is defined as a function or a class.
+  1. This is why state is often called local or encapsulated. It is not accessible to any component other than the one that owns and sets it.
+  1. A component may choose to pass its state down as props to its child components: ie render ```{this.state.date.toLocaleTimeString()}```
+  1. This also works for user-defined components
+  1. This is commonly called a “top-down” or “unidirectional” data flow. Any state is always owned by some specific component, and any data or UI derived from that state can only affect components “below” them in the tree.
+  1. In React apps, whether a component is stateful or stateless is considered an implementation detail of the component that may change over time. You can use stateless components inside stateful components, and vice versa.

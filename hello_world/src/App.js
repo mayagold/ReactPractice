@@ -16,9 +16,16 @@ class Hello extends Component { //the component we're creating
 
   }
   increaseMood(e) {
-    this.setState({
-      moodPoints: this.state.moodPoints + 1
-    })
+    if (this.state.moodPoints < 10 ) {
+      this.setState({
+        moodPoints: this.state.moodPoints + 1
+      })
+    } else {
+      this.setState({
+        moodPoints: 1
+      })
+    }
+
   }
   render() { // render method controls what is rendered, or displayed, to the screen.
     return ( // can only return one jsx object at a time so if you want mult lines of text they must be in a container div
