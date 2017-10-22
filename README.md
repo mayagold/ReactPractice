@@ -423,3 +423,519 @@ This is a list of documentation to help you learn more about binding and events:
 - [React form documentation](https://facebook.github.io/react/docs/forms.html)
 - [A list of events React supports](https://facebook.github.io/react/docs/events.html#supported-events)
 - [How to handle events](https://facebook.github.io/react/docs/handling-events.html)
+
+---
+---
+
+# ES6
+
+ES6 is also called ES2015.
+
+It refers to a set of language features that were added to the ECMAScript standard (JavaScript, for our intents and purposes).
+
+**More changes are set to be adopted this year, which will be called ES8 and ES2017.**
+
+The entire set of modern features from ES6 onward is sometimes referred to as "ESNext."
+
+Features allow for:
+* More concise (as in, less) code.
+* Easier-to-read & easier-to-maintain code.
+* Fun code! We'll see syntax that looks like a little rocket ship.
+
+**React development assumes knowledge and use of ES6**
+
+### Babel
+
+Babel:
+
+Takes your ES6 (and beyond) code and transpiles it into browser-friendly ES5.
+
+Babel comes built-in with any project started using Create React App. This means your production build is ready for deployment.
+
+Support for new language features is coming to browsers. Chrome already allows for them all.
+
+Remember: ES6 is the JavaScript that you write, whereas JSX is just what your components will render to the actual screen.
+
+Babel can transpile JSX to plain JavaScript — just like it transpiles ES6 JavaScript to ES5 - but they are not the same thing!
+
+### Most Important Features
+
+* ```const``` and ```let```
+* Arrow functions
+* Object literal shorthand
+* Template literals
+* Imports and modules
+
+**Note: Semicolons are optional in ES6.** However, whether or not to use them is under constant debate in the wider programming community. *Can choose to include for clarity*
+
+### ```const``` and ```let ```
+
+* If you assign a ```const``` to a primitive type (such as a string, number, or boolean), you can't change its value at all.
+  * This does not mean that a const is immutable: we can change a property of an object or add an item to an array. You just cannot change the object's reference.
+
+* ```let``` has the same assignment rules as ```var```
+
+**Why not use ```var```?**
+
+Because ```var``` in JavaScript is scoped to the nearest parent function, it can be a bit unpredictable.
+
+Using ```let``` is more predictable and straightforward.
+
+let is a block scoped variable, so its value is scoped to the nearest curly braces {}, rather than to the whole function.
+
+Thus, within a loop, let will create a new instance for each iteration instead of changing the original variable.
+
+let makes the scope of i appear only inside the curly braces of the for loop.
+
+With more predictable scope, let variables are easier to keep track of visually than vars and less likely to introduce bugs to your code.
+
+### Imports and Modules
+
+In ES6, you can import modules directly without declaring them as global variables.
+
+This makes namespacing your app a non-issue.
+
+You can also export multiple modules from a file.
+
+### Arrow Functions & Implicit Returns
+
+Using let or const with a function is not necessary, but in some cases it's good practice (more on that later).
+
+If the function does nothing except a return:
+
+``` javascript
+// traditional
+function addTwo(num) {
+  return num + 2;
+}
+
+// arrow syntax
+const addTwo = num => {
+  return num + 2;
+}
+
+// now even further simplified
+const addTwo = num => num + 2;
+```
+
+If there is no block following the arguments of an arrow function (meaning nothing in { } brackets), whatever follows is the return value of the function.
+
+One "gotcha" to be aware of with implicit returns is that object literals must be wrapped in parentheses.
+
+``` javascript
+const isItActive = isActive => ({ active: isActive });
+```
+
+This function only returns one thing, but because it implicitly returns an object literal, it must be wrapped in parentheses.
+
+### ```this``` binding
+
+Whatever hack you've been using, you don't need it anymore! Arrow functions don't change the definition of this.
+
+If ```this``` is already defined in the scope and you call an arrow function, you can access this directly.
+
+### Object Literal Shorthand
+
+If you want to assign a variable as the value of the key of the same name, you don't have to write it twice.
+
+Having two different variables with the same name and setting them equal to each other is a pretty common practice.
+
+``` javascript
+const price = 100;
+
+const item = {
+  price
+};
+```
+
+### Template Literals   ${ }
+
+Template literals bring string interpolation to JavaScript.
+
+This means we can create dynamic strings with more readable syntax.
+
+```javascript
+const greeting = name => `Hi, ${name}.`;
+```
+
+### Functional Components
+
+* Simpler way of declaring React components because React class components give you properties that you don't always need (such as state, methods like setState).
+
+Some components are purely presentational.
+
+They take ```props``` and render the user interface.
+
+When created as a React class, these components usually just contain a ```render``` method.
+
+Rather than create them as classes, you can write them as functions.
+
+A React functional component takes the ```props``` object as its argument and returns JSX.
+
+Written as a class:
+
+``` javascript
+class Name extends React.Component {
+  render() {
+    return (
+      <div>
+        Name: {this.props.firstName} {this.props.lastName}
+      </div>
+    )
+  }
+}
+```
+
+As a functional component:
+``` javascript
+const Name = props => (
+  <div>
+    Name: {props.firstName} {props.lastName}
+  </div>
+)
+```
+
+**Use a functional component:**
+* If you don't need anything special.
+* If you are just returning JSX to render something.
+
+**Use a class:**
+* If you need your component to be stateful (That is, if you need the ability to use setState to respond to changes).
+* If you need life cycle methods (if you need to do something when the component mounts, receives props, or unmounts).
+* If you need a ref (that is, a reference to the DOM element rendered by the component).
+
+**Functional Components are Declarative**
+Rather than telling the DOM how to render the UI we want (which nodes to change and how), we can use JSX to "declare" how we want the markup to look, and React alters the DOM accordingly.
+
+
+### Component Lifecycle
+
+*These methods happen automatically, but you can call them to modify them.*
+
+The lifecycle falls into three main pieces: mounting, updating, and unmounting.
+
+You can use these methods to perform actions based on what's happening on the DOM.
+
+componentDidMount, for example, is called immediately after a component is rendered to the DOM.
+
+componentWillUnmount is called immediately before a component is removed from the DOM.
+
+
+### Initializing
+
+Methods include:
+* constructor()
+  *  This is sometimes referred to as a combination of getInitialState() and getDefaultProps().
+* componentWillMount()
+  * usually only needed in advanced use cases such as server rendering.
+* componentDidMount()
+  * called once, immediately after your component is rendered to the DOM. If you want to make an AJAX request when your component first renders, do it here. Also used to bind event listeners to your component.
+* render()
+  * called in two parts of the component lifecycle - at the beginning, when the component is being initiated/mounted, and when the component is being updated.
+  * return JSX using the component's props and state.
+  * You should never set state in render.
+
+### Updating
+* componentWillReceiveProps(newProps)
+  * called anytime your component receives new props
+  * If you need to change the state of your component based on changes in the props, do it here.
+  * In a simple app, you generally won't need componentWillReceiveProps.
+* shouldComponentUpdate(), componentWillUpdate(), componentDidUpdate()
+  * performance optimizations
+* render()
+
+### Destruction / Unmounting
+* componentWillUnmount()
+
+In JavaScript classes, methods aren't bound by default. If you pass a component's method to a child component without binding it, it can lose its context and not behave the way you intend. To get around this, we bind class methods. This is another common use of the constructor method.
+
+When a method is "bound" to a component, it means that, when the method is invoked, this will refer to the component and not to the context that invoked the method.
+
+### unidirectional data flow
+
+When several components in a view need to share state, you lift, or hoist, the state so that it's available to all the components that need it.
+
+Define the state in the highest component you can, so that you can pass it to any components which will need it.
+
+It's important to take time to define the app's structure before you start writing code. **Define the components and the state we need before we write the code.**
+
+* Sketch out your app.
+* Identify the components you need.
+* Identify the state you need.
+* Identify where that state needs to live.
+
+### Immutability
+
+Treating data as immutable makes application development easier.
+
+Data mutations can be hard to track (say, in a debugger).
+
+The array methods map, filter, and reduce return modified copies of the array and don't mutate the originals.
+
+Similarly, there are ways to change data in objects that don't mutate the originals. ES6's ```Object.assign``` is useful for this:
+
+```
+const newObject = Object.assign({}, anObject, { foo: 'barrrrr' })
+```
+
+There are several mature JavaScript libraries that provide immutable data types and/or immutable methods that can make maintaining immutable data types simple.
+
+One of the most popular is [Immutable.js](https://facebook.github.io/immutable-js) from Facebook, which provides immutable data types like List, Stack, Map, OrderedMap, Set, OrderedSet, and Record — and methods for making changes to your data like set, get, delete, and update.
+
+---
+---
+
+# Review Guide: ES6 and Intermediate React
+Below, you'll find key terms, key concepts, key code snippets, and further reading - all covering the basics of ES6, functional components, component lifecycle, unidirectional flow, and immutable data.
+
+### Key Terms & Definitions
+
+* **Arrow Functions**
+  - This is a more concise syntax for declaring functions.
+  - It can be simplified further if the function does nothing except a return.
+  - `const addTwo = num => num + 2;`
+  - Arrow functions don't change the definition of `this`.
+  - If `this` is already defined in the scope and you call an arrow function, you can access `this` directly.
+  * Refer to the "Key Code Snippets" section below for examples
+
+* **Component Lifecycle**
+  - React class components have lifecycle methods that are invoked at certain stages of a component's "life" on the DOM. Some of the life cycle methods you'll use frequently include:
+    - `constructor()`: Initializes state, binds methods.
+    - `componentDidMount()`: Makes AJAX requests, gets DOM refs, binds event listeners, sets `state` if necessary.
+    - `componentWillUnmount()`: Unbinds event listeners, performs other clean up.
+    - `componentWillReceiveProps()`: Updates `state` based on changes in components.
+    - `render()`: Returns markup/UI.
+  - React components' lifecycle events fall into three broad categories:
+    - Initializing/mounting
+    - Updating
+    - Destruction/unmounting
+
+
+![Life Cycles](https://ga-instruction.s3.amazonaws.com/json/REACT/assets/unit3/React_Component_Lifecycle.png)
+
+* **ES6**
+  * ES6 is also referred to or part of ES2015, ECMAScript, and ESNext.
+  * ES6 is a standardized specification of JavaScript features introduced in 2015.
+  * ES6 adds many new features, such as:
+    * Arrow functions - `const doStuff = stuff => stuff + 5;`
+    * `const` and `let` - `const name = 'Jim'`; `let age = 25;`
+    * Object literal shorthand - `const name = 'Jim', jim = { name };`
+    * Template literals - `const greet = person => 'Hi, ${person.firstName} ${person.lastName};'`
+    * Imports and modules - `import MyModule from './MyModule';`
+  * Refer to specific sections below for further information.
+
+* **`const` and `let`**
+  * `const` and `let` are new keywords for declaring variables: `const name = 'Jim'`; `let age = 25;`
+  * `const` can't be reassigned; `let` can be.
+  * `let` exists for block scoping.
+  * Refer to the "Key Code Snippets" section below for examples
+
+
+* **Functional Components**
+  - A React functional component takes the `props` object as its argument and returns JSX.
+  - It can have logic in it - but it's written as a function!
+  - Here's a component written regularly, as a class:
+  ```js
+  class Name extends React.Component {
+    render() {
+      return (
+        <div>
+          Name: {this.props.firstName} {this.props.lastName}
+        </div>
+      );
+    }
+  }
+  ```
+  - Now here's the same component as a functional component:
+  ```js
+  const Name = props => (
+    <div>
+      Name: {props.firstName} {props.lastName}
+    </div>
+  );
+  ```
+
+* **Immutable Data Types**
+  - Something that is **immutable** is something that cannot be changed.
+  - State and props are to be treated as immutable; `const` variables are immutable.
+  - Use immutable methods and immutable libraries to make maintaining immutable data types simple - see the Further Reading section.
+    - The array methods `map`, `filter`, and `reduce` return modified copies of the array and don't mutate the originals.
+    - ES6's `Object.assign` is a way to change data in objects that doesn't mutate the originals.
+
+
+* **Object Literal Shorthand**
+  - If you want to assign a variable as the value of the key of the same name, you don't have to write it twice. Before we would have:
+  ```js
+  const price = 100;
+
+  const item = {
+    price: price,
+  };
+  ```
+  turns into:
+  ```js
+  const price = 100;
+
+  const item = {
+    price,
+  };
+  ```
+
+* **Template Literals**
+  -  Create dynamic strings with more readable syntax.
+  ```js
+  const name = 'Mike';
+  const greeting = `Hi, ${name}.`;
+  ```
+
+* **Unidirectional Flow**
+  - In React applications, data usually flows from the top down.
+    - This is called unidirectional flow.
+  - Define the state in the highest component you can, so that you can pass it to any components which will need it.
+
+
+### Key Concepts
+
+* **`const` vs `let`**
+  - It's best practice to use `const` and `let`, rather than `var`, whenever possible
+    - Including defining functions!
+    - If the variable's value _will_ or _might_ change (unless you need a global scope) you'll likely declare it as a `let`.
+
+* **When do you use a functional component?**
+  * Use a **class** if you need:
+    - Your component to be stateful (That is, if you need the ability to use `setState` to respond to changes).
+    - Lifecycle methods (if you need to do something when the component mounts, receives `props`, or unmounts).
+    - A `ref` (that is, a reference to the DOM element rendered by the component)
+  * And only if you _don't_ need any of those things:
+    - Use a functional component.
+
+
+### Key Code Snippets - `const`
+
+- `const` and `let` are new keywords for declaring variables.
+- `const` can't be reassigned.
+  - However, this does _not_ mean that a `const` is immutable.
+  - JavaScript assigns by reference.
+  - This means that a variable can't be reassigned entirely, but we *can* change a property of an object or add an item to an array.
+
+Using `const`, this is **not** correct or doable - **it will throw an error, because a `const` variable cannot be reassigned.**
+```js
+const hi = 'hello';
+hi = 'goodbye';
+```
+
+**However**, using `const`, this **is** correct and doable.
+
+```js
+const anObject = {
+  hi: 'hello',
+  animal: `muffin`
+};
+```
+
+We can set:
+
+```js
+anObject.animal = 'puppy';
+```
+
+The new value of `anObject` is now:
+
+```js
+{
+  hi: 'hello',
+  animal: 'puppy'
+}
+```
+
+
+### Key Code Snippets - `let`
+
+- `const` and `let` are new keywords for declaring variables.
+- `let` has the same assignment rules as `var`.
+  - The value and reference of a `let` variable can change.
+- `let` is a **block scoped** variable, so its value is scoped to the nearest curly braces {}, rather than to the whole function.
+
+**Simple `let` example**
+
+```js
+let hi = 'hello';
+hi = 'goodbye';
+```
+**`let` example of scoping**
+
+```js
+function letTest() {
+  let x = 1;
+  if (true) {
+    let x = 2;  // curly braces = different variable
+    console.log(x);  // Prints 2
+  }
+  console.log(x);  // Prints 1
+}
+```
+
+
+### Key Code Snippets - Arrow functions
+
+**Simple arrow function example:**
+- In regular JavaScript
+```js
+function multiply(x, y) {
+  return x * y;
+}
+```
+
+- Same function using ES6 arrow syntax. Differences:
+  - Declare the function as a variable: `var multiply`.
+  - Pass in the parameters (here, `x` and `y`) after an equal sign
+  - Put arrow function symbol `=>`
+  - Put actual function definition
+
+```js
+const multiply = (x, y) => {
+  return x * y;
+}
+```
+
+**Implicit return example:**
+- If the function only returns in one line:
+
+```js
+const addTwo = num => x * y;
+```
+
+
+
+### Further Reading
+
+The links below are optional, but they're great resources for you.
+
+
+##### Other links of interest to reinforce this learning
+- [Facebook's Guide to Thinking in React](https://facebook.github.io/react/docs/thinking-in-react.html)
+- [Facebook's Documentation on Components](https://facebook.github.io/react/docs/react-component.html).
+- [Side Effect Definition](https://en.wikipedia.org/wiki/Side_effect_(computer_science))
+  - Thse should be avoided in the `constructor`, so server requests shouldn't be made there. The accepted answer on this [Stack Overflow question](http://stackoverflow.com/questions/41612200/in-react-js-should-i-make-my-initial-network-request-in-componentwillmount-or-co), provided by a member of the React team at Facebook, gives more detail.
+- [`window.setTimeout`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
+- [Recursion Definition](https://en.wikipedia.org/wiki/Recursion_(computer_science)
+  - This is good to know as that's what `incrementSpeed` is
+- [Non-official Immutable Libraries](https://gist.github.com/jlongster/bce43d9be633da55053f)
+- [Official Immutable.js from Facebook](https://facebook.github.io/immutable-js/)
+  - One of several mature JavaScript libraries that provide immutable data types and/or immutable methods that can make maintaining immutable data types simple.
+  - This which provides immutable data types like `List`, `Stack`, `Map`, `OrderedMap`, `Set`, `OrderedSet`, and `Record` — and methods for making changes to your data like `set`, `get`, `delete`, and `update`.
+  - Just use the types and methods provided, and the library takes care of immutability for you.
+
+#### Some of the features from ES6 and beyond we did _not_ cover, if you'd like to read about ES6 further:
+
+- [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [Async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)/[Await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)
+- [Generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators)
+- [Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+- [Array Spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator)
+- [Array and Object Destructuring Assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+- [Object Rest Spread](https://babeljs.io/docs/plugins/transform-object-rest-spread/)
+
+##### Complex topics not covered for your optional future further study
+- [A Cartoon Guide To Flux by Lin Clark](https://code-cartoons.com/a-cartoon-guide-to-flux-6157355ab207#.m53psmlww)
+- [Redux State Management Library](http://redux.js.org/)
