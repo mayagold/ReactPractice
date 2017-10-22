@@ -939,3 +939,113 @@ The links below are optional, but they're great resources for you.
 ##### Complex topics not covered for your optional future further study
 - [A Cartoon Guide To Flux by Lin Clark](https://code-cartoons.com/a-cartoon-guide-to-flux-6157355ab207#.m53psmlww)
 - [Redux State Management Library](http://redux.js.org/)
+
+
+---
+---
+
+# React Router
+
+## Browser History Mechanics
+
+We can write JavaScript programs that invoke browser mechanics, ie ```window.history.back() ```  and ```window.history.forward()```.
+
+React broke old, traditional browser history mechanics and led to the introduction of new ways for websites to control what back and forward really mean.
+
+
+A page is a whole HTML file that your browser downloads and displays. You know you're navigating between two different pages when you see your browser screen go blank then slowly load in a totally new page.
+
+Pages can be all on the same site or on many different sites.
+
+A site is a domain.
+
+Routing defines what content is displayed when someone visits a certain URL.
+
+A route pairs a URL with the content that should be displayed for that URL.
+
+The ```/``` path is a special path called the root. It loads the home page.
+
+Website URLs are generally split into succinct, descriptive, hierarchical categories.
+
+### Old websites
+
+* Spread their content across multiple pages.
+* Use URLs to route users to different pages.
+* Use URLs with hashtags to take the user to different content on the same page.
+
+### Modern Single-Page Applications
+
+Modern web apps serve up just one page and then change parts of its contents, without having to reload the entire page or send users to another page.
+
+This is fast & persistent.
+
+Single-page applications break the initial design of browser history mechanics.
+
+Why is this? The back and forward actions were built specifically to go back and forth between different pages.
+
+Because single-page apps only change their own content — without actually sending users to different web pages — the notion of back and forward is lost.
+
+When users press the back button in a single-page application, they go back off of the single page, completely out of the SPA.
+
+### Modern Browser History Mechanics
+
+A few years ago, committees devised a way to upgrade the old browser history mechanics to accommodate modern SPAs.
+
+The modern HTML5 specification (published in October 2014) introduced new browser history mechanics that make it easy to browse "back" and "forward" in single-page applications, even while actually staying on the same page.
+
+HTML5 introduced:
+
+```
+.pushState()
+
+.replaceState()
+```
+
+These are functions that allow web pages to save custom history data to the browser.
+
+For example, if a Gmail user is looking at their search results page, Gmail can use ```.pushState``` to add the page to their custom browser history, aka  to save information in the browser about what the user is currently doing in the application.
+
+Now, if the user clicks on an email and then clicks "back," they return to the search page — instead of a completely different site.
+
+React Router automatically manages browser history when the user navigates between content.
+
+React Router is actually a third-party library.
+
+### General syntax for creating routes
+
+React Router uses some of its own components to define how URLs are routed to your components and to create links to those routes.
+
+You must have one ```<Router>``` component that wraps itself around multiple ```<Route>``` components.
+
+Each ```<Route>``` component has two pieces:
+
+* ```path``` - This defines the URL path that leads to the component.
+
+* ```component``` - This defines what component users will see when they navigate to the path.
+
+A single route looks like this:
+
+```
+<Route path="/contacts" component={Contact} />
+```
+
+The ```exact``` attribute means the component associated with the route will only be shown if users are at exactly that URL path.
+
+If you forget to include the ```exact``` keyword, when someone navigates to ```/contact``` they will actually see two components, because ```/``` is a partial match for ```/contact.```
+
+Important:  all the <Route> components are wrapped inside one <div>.
+
+
+### ```<Link /> ```
+
+This creates ```<a>``` tags and automatically integrates modern HTML5 browser history mechanics for the single-page application. It has one attribute:
+
+```
+to:
+```
+
+This designates what path to navigate to when the user clicks the link.
+
+React strips out whitespace (e.g., spaces, returns, tabs) between elements.
+
+We must insert a space manually by writing ```{' '}``` in order to get spaces between our links.
