@@ -1049,3 +1049,395 @@ This designates what path to navigate to when the user clicks the link.
 React strips out whitespace (e.g., spaces, returns, tabs) between elements.
 
 We must insert a space manually by writing ```{' '}``` in order to get spaces between our links.
+
+---
+---
+
+# APIs, Heroku
+
+API commonly refers to web URLs that can be accessed for data: an API is a service that provides raw data for public use.
+
+Why recreate data when we don't have to?
+
+You want the information to be returned as quickly as possible, so users aren't waiting forever for your page to load.
+
+All of this information — from all of these browsers and all of these servers — has to travel through the network. That's almost certainly the slowest part of the request cycle.
+
+All data sent via HTTP are strings... but what we really want to pass between web applications is structured data.
+
+Thus, native data structures can be serialized into a string representation of the data.
+
+* JSON
+* XML
+
+JSON stands for "JavaScript object notation" and has become a universal standard for serializing native data structures for transmission.
+
+XML stands for "eXtensible markup language".
+
+While the majority of APIs are free to use, many of them require an API "key" that identifies the developer requesting data access. This is done to regulate usage and prevent abuse. Some APIs also rate-limit developers, meaning they have caps on the free data allowed during a given time period.
+
+When you are call an API that require a key, it's up to you to store that key somewhere private. It is the only proof that you are you and that you are allowed to call that API.
+
+It is essential that you not push your API keys to a public GitHub repo.
+
+This is especially true when working with Amazon Web Services (AWS). [Or else](https://wptavern.com/ryan-hellyers-aws-nightmare-leaked-access-keys-result-in-a-6000-bill-overnight)...
+
+### Dynamically manipulate the DOM with API data
+
+```
+fetch()
+```
+
+allows us to build single-page applications that do not require refreshes.
+
+AJAX stands for "asynchronous JavaScript and XML." It's the method through which we are able to make HTTP requests. The standard requests we will make are GET, POST, PUT, PATCH, and DELETE.
+
+Fetching JSON using JavaScript:
+
+```javascript
+fetch(url)
+  .then((response) => {
+    // Here you get the data to modify or display as you please
+    })
+  })
+  .catch((error) => {
+    // If there is any error, you will catch it here
+  })
+```
+
+### React and APIs
+
+Make API calls in ```componentDidMount()``` - if you need to load data from a remote endpoint, this is a good place to instantiate the network request.
+
+
+The ```fetch()``` call involves many callbacks with several different functions. In order to preserve the initial context of our React component, we need to create a new variable, ```base```, to keep track of the original value of the this keyword. Saving the original value of ```this``` to ```base``` allows us to access methods like ```this.setState()``` through ```base.setState()``` throughout all of the different functions.
+
+Example:
+
+```
+import React, {Component} from 'react';
+
+class Home extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      shakeSpeare: ""
+    }
+  }
+
+  componentDidMount() {
+    // save a reference to `this` because the value of `this` will change
+    // inside the different callback functions.
+    var base = this
+
+    // fetch a poem
+    let poemApi = 'http://ShakeItSpeare.com/api/poem';
+    fetch(poemApi)
+      .then((response) => {
+        return response.json()
+      }).then((json) => {
+          base.setState({ shakeSpeare: json.poem });
+      }).catch((ex) => {
+        console.log('An error occured while parsing!', ex)
+      })
+  }
+
+  render() {
+    let poetry = this.state.shakeSpeare;
+    if (this.state.shakeSpeare) {
+      return (
+        <div>
+        <h1>My favorite Shakespeare poem:</h1>
+        {poetry}
+        </div>
+        } else {
+          return (
+            <div>
+              <h1>My favorite Shakespeare poem:</h1>
+              "Loading"
+            </div>
+          )
+        }
+     )
+  }
+}
+```
+
+# Imperative and Declarative Programming
+
+### Imperative
+
+* Outline what they need to do. (Pseudocode)
+* Write it out step by step.
+* Focuses on the why, how, where, and when your code executes.
+* Allows precise control over your code and line-by-line code execution — you're writing every single thing that happens.
+
+Imperative is commonly found in object-oriented programming environments where you focus on a line-by-line execution path, working with objects.
+
+### Declarative
+
+Instead of writing every single step yourself — i.e., instead of explicitly writing the why, how, where, and when of your program — this method only cares about what you want.
+
+Instead of taking the time to write out a specific set of instructions to receive a result, you focus on just one thing: the result.
+
+With modern web development's focus on simplicity, some developers have been leveraging declarative techniques.
+
+React.js is one framework that uses a declarative approach. Vue.js is another. You'll find that many asynchronous JavaScript techniques rely on declarative programming techniques for ease of readability.
+
+Neither method is incorrect, but declarative code tends to lead to DRY, clean code. And a final fun fact: Functional programming is a subset of declarative programming.
+
+If you've ever used a functional language, such as Haskell or Lisp, or written calculus, you've likely written declarative code.
+
+
+---
+---
+
+# Deploying a React App to Heroku
+
+Terminal
+
+* ```create-react-app your_app_name_here```
+* ```cd $your_app_name_here```
+* ```git init``` within the React application
+  * Heroku CLI requires Git to handle versioning for deployment
+* ```heroku create your_app_name_here --buildpack https://github.com/mars/create-react-app-buildpack.git```
+  * Buildpack: set of scripts that Heroku will use to read React.js code and rebuild it to be hosted on the web
+* Output:
+  ```
+  Creating app... done, ⬢ your_app_name_here
+ Setting buildpack to https://github.com/mars/create-react-app-buildpack.git... done
+ https://your_app_name_here.herokuapp.com/ | https://git.heroku.com/your_app_name_here.git
+ ```
+* ```git add -A```
+* ```git commit -m "commit_message"```
+* ```git push heroku master```
+* ```heroku open```
+
+
+By default, React Router (not included) uses hash-based URLs like https://example.com/index.html#/users/me/edit. This is nice and easy for getting started with local development, but for a public app you probably want real URLs like https://example.com/users/me/edit.
+
+Create a ```static.json``` file to configure the web server for clean ```browserHistory``` URLs with React Router:
+
+```
+{
+  "root": "build/",
+  "clean_urls": false,
+  "routes": {
+    "/**": "index.html"
+  }
+}
+```
+
+### CORS
+
+A CORS proxy is a service that allows developers (probably you) to access resources from other websites without having to own that website.
+
+Limiting who can access your web server is important in web security - otherwise, someone could (for example) write code that runs on https://acatwebsite.com/ and changes all the content to be dogs.
+
+CORS stands for "Cross-Origin Resource Sharing". CORS is a web standard that websites use to make sure that things accessing them (like you trying to get a cat picture) are safe.
+
+When you try to go to a website where only one side is using CORS on the backend, you'll get an error saying that you aren't allowed to access the resource.
+
+With a CORS proxy, you don't have to know anything about setting up CORS (unless you're interested in researching yourself!); it takes care of this for you. You just need the proxy, and then you can embed all the cat pictures you want.
+
+Add ```"proxies"``` to ```static.json```:
+
+```
+{
+  "proxies": {
+    "/api/": {
+      "origin": "${API_URL}"
+    }
+  }
+}
+```
+
+Then, point the React UI app to a specific back-end API using the CLI:
+
+```heroku config:set API_URL="https://api.example.com"
+```
+
+---
+---
+
+# Review Guide: APIs, Programming Types, and Heroku
+Below, you'll find key terms, key code snippets, and further reading - all covering the basics of APIs, imperative and declarative programming, and Heroku.
+
+### Key Terms & Definitions
+
+
+* **API**
+  * Stands for "application program interface"
+  * A service that provides raw data for public use - usually in JSON or XML
+  * For example, you can call the ISS API to get a list of all astronauts currently on the ISS by sending a request to `http://api.open-notify.org/astros.json`
+  - Not all APIs are open; some require an API key (which isn't always free!). The API call will not work without it.
+    - For example, this API call will not work: `http://api.openweathermap.org/data/2.5/weather?zip=60614,us`
+    - However, if we add a key at the end, this API call will work: `http://api.openweathermap.org/data/2.5/weather?zip=60614,us&appid=052f26926ae9784c2d677ca7bc5dec98`
+
+* **Declarative Programming**
+  - As compared to Imperative Programming
+  - When writing a program, you focus on just one thing: the result
+  - Any asynchronous JavaScript techniques rely on declarative programming techniques for ease of readability
+  - React is a JavaScript framework that uses a declarative approach
+  - See the **Key Code Snippets** section for an example
+
+* `fetch`
+  - A request to a server - imagine literally requesting to "fetch" data.
+  - Using the `fetch` method in a program is how you call an API
+  - In React, your `fetch` requests will be in the `componentDidMount()` method
+  - See "Key Code Snippets" for `fetch` examples
+
+* **Heroku**
+  - Heroku is a cloud platform that allows developers to quickly deploy applications to the internet.
+  - It's free for your first five apps, and an excellent way to deploy an application live.
+
+* **Imperative Programming**
+  - As compared to Declarative Programming
+  - An approach to programming where you write every single thing that happens.
+  - This focuses on the _why_, _how_, _where_, and _when_ of a program.
+  - It allows precise control over your code and line-by-line code execution
+  - Commonly found in object-oriented programming environments
+  - See the **Key Code Snippets** section for an example
+
+* **JSON**
+  * Stands for "JavaScript object notation"
+  * A universal standard for serializing native data structures for transmission
+  * It is lightweight, easy to read, and quick to parse.
+  * Information is separated with braces {} and commas:
+
+```json
+  {
+    "users": [
+      {"name": "Superman", "id": 0},
+      {"name": "Wonder Woman", "id": 1},
+      {"name": "Black Panther", "id": 2}
+    ]
+  }
+```
+
+* **XML**
+  * Stands for "eXtensible markup language".
+  - While difficult to read, it remains a major format because of legacy usage across the web.
+  - XML uses open tags and close tags, just like HTML. It looks like this:
+
+```html
+<users>
+  <user id="0">
+    <name>Superman</name>
+  </user>
+  <user id="1">
+    <name>Wonder Woman</name>
+  </user>
+  <user id="2">
+    <name>Black Panther</name>
+  </user>
+</users>
+```
+
+
+### Key Code Snippets
+
+* **Fetch**
+**`fetch` skeleton code**
+
+```js
+
+// In plain JavaScript
+fetch(url)
+  .then(function(response) {
+    // Here you get the data to modify or display as you please
+    })
+  })
+  .catch(function(ex) {
+    // If there is any error, you will catch it here
+  });
+
+
+// Using ES6**
+
+fetch(url)
+  .then((response) => {
+    // Here you get the data to modify or display as you please
+    })
+  })
+  .catch((ex) => {
+    // If there is any error, you will catch it here
+  });
+```
+
+**Actual `fetch` example (using ES6) to get a list of astronauts currently on the ISS**
+
+```js
+let issApi = 'http://api.open-notify.org/astros.json'; /* what API are we calling? We get this URL from the ISS server*/
+fetch(issApi)     // Call fetch() on that API URL
+  .then((response) => {     // take the response provided by the server
+    return response.json()  //  and return it with as JSON
+  }).then((json) => {       // Take that JSON
+    console.log('JSON from the ISS', json)   // Log it to the console
+  }).catch((ex) => {    // If an error occurs instead of getting information back, catch it
+    console.log('An error occured while parsing!', ex)    // Log the error to the console
+  });
+```
+
+**Declarative and Imperative Programming**
+
+To do the following pseudocode:
+
+```
+ask everyone in the room to line up
+for every person in the line
+  ask each person to come to the front of the room
+  ask each person to speak their name
+```
+
+In each programming method:
+```js
+
+let room = ['Miguel', 'Katie', 'Susana', 'Shakira'];
+
+//With **declarative** programming:
+
+room.forEach((person) => {
+  console.log("Declarative way: " + person);
+});
+
+// Conversely, with **imperative** programming:
+
+for (let i = 0; i < room.length; i++) {
+  let person = room[i];
+  console.log("Imperative way: " + person);
+}
+```
+
+
+### Further Reading
+
+The links below are optional, but they're great resources for you to reinforce and augment the learning here.
+
+- [Can I Use?](https://caniuse.com/)
+  - An excellent website which allows you to search a programming feature (such as `fetch` or `CSS Transforms`) and returns which browsers support it.
+
+**APIs:**
+
+- [`fetch` in general on MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch).
+  - It is important to note that while this is an ES6 standard, [some browsers](http://caniuse.com/#search=fetch) do not support it, including Internet Explorer (although Edge does).
+  - You may need a polyfill for live projects. If you need one for a production project, [GitHub's polyfill](https://github.com/github/fetch) is very popular.
+
+- [React documentation on `componentDidMount()`](https://facebook.github.io/react/docs/react-component.html#componentdidmount)
+  - If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
+
+- [Programmable Web API Directory](http://www.programmableweb.com/apis/directory)
+  - A list of open APIs
+
+- [JSON View plugin](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en).
+  - A Chrome plugin which renders JSON to a more readable format
+
+
+**Ways to deploy an app and CORS:**
+  - [Heroku Docs](https://blog.heroku.com/deploying-react-with-zero-configuration#new-zero-configuration-experience)
+  - [create-react-app docs](https://github.com/facebookincubator/create-react-app)
+  - [Heroku buildpack for create-react-app](https://github.com/mars/create-react-app-buildpack#quick-start)
+  - [URLs with React Router](https://github.com/mars/create-react-app-buildpack#routing-clean-urls)
+    - So users have clean URLs
+  - [MDN CORS documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) 
